@@ -35,9 +35,20 @@ async function run() {
       res.send(product);
     });
 
-
+    app.put('/product/:id', async (req, res) => {
+      const id = req.params.id;
+      const productQuantity = req.body;
+      const objectId = {_id:ObjectId(id)}
+      const options = {upsert:true};
+      const updateDoc={
+        $set:{
+          stock:productQuantity.quantity
+        },
+      };
+      const result = await carCollection.updateOne(objectId,updateDoc,options)
+      res.send(result);
+    });
   } finally {
-    
   }
 }
 run().catch(console.dir);
