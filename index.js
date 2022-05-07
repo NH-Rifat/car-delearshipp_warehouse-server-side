@@ -38,14 +38,51 @@ async function run() {
     app.put('/product/:id', async (req, res) => {
       const id = req.params.id;
       const productQuantity = req.body;
-      const objectId = {_id:ObjectId(id)}
-      const options = {upsert:true};
-      const updateDoc={
-        $set:{
-          stock:productQuantity.quantity
+      const objectId = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          stock: productQuantity.quantity,
         },
       };
-      const result = await carCollection.updateOne(objectId,updateDoc,options)
+      const result = await carCollection.updateOne(
+        objectId,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    app.put('/productStock/:id', async (req, res) => {
+      const id = req.params.id;
+      const productQuantity = req.body;
+      const objectId = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          stock: productQuantity.newStock,
+        },
+      };
+      const result = await carCollection.updateOne(
+        objectId,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    app.delete('/product/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await carCollection.deleteOne(query);
+
+      res.send(result);
+    });
+
+    app.post('/product', async (req, res) => {
+      const newProduct = req.body;
+      const result = await carCollection.insertOne(newProduct);
+
       res.send(result);
     });
   } finally {
