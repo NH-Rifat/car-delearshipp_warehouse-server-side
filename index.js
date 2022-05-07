@@ -88,7 +88,7 @@ async function run() {
 
     app.get('/myItems', async (req, res) => {
       const email = req.query.email;
-      console.log(email);
+      // console.log(email);
       const query = { email: email };
       const result = await carCollection.find(query).toArray();
 
@@ -101,6 +101,9 @@ run().catch(console.dir);
 
 app.get('/', (req, res) => {
   res.send('car dealer sever connected');
+});
+app.get('/success', (req, res) => {
+  res.send('car dealer sever connected successfully');
 });
 
 app.listen(port, () => {
