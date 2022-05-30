@@ -1,15 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
+
 var jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-require('dotenv').config();
 const port = process.env.PORT || 5000;
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+const corsConfig = { origin: '*' };
+app.use(cors(corsConfig))
+
 
 // verify function.......
 function verifyJWT(req, res, next) {
@@ -39,6 +43,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
+    // console.log('connected with mongodb');
     const carCollection = client.db('car-dealer').collection('product');
 
     // jwt Authentication
